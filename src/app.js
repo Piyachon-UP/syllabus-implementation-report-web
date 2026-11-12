@@ -4,7 +4,7 @@
   // Static browser-only report app. Syllabus input is kept intact in SourceSyllabus.
   // The report's JSON format is intentionally separate from Syllabus SchemaVersion 1.0.0.
   const REPORT_VERSION = '1.0.0';
-  const APP_VERSION = '0.1.0';
+  const APP_VERSION = '0.2.0';
   const tabs = [
     { id: 'course', name: 'ข้อมูลรายวิชา', icon: '01' },
     { id: 'instructors', name: 'ผู้สอน', icon: '02' },
@@ -191,7 +191,7 @@
        ${activeTab==='plans'||activeTab==='assessments'?`<div class="status-note">เลือกระบุผลแต่ละรายการเป็น <strong>ตามแผน / ไม่ตามแผน</strong> หรือ <strong>บรรลุ / ไม่บรรลุ</strong> หากเลือกผลเป็นลบ ให้ระบุทั้ง “สาเหตุ” และ “การดำเนินการ” สามารถบันทึกรายงาน JSON ได้แม้ยังกรอกไม่ครบ</div>`:`<div class="status-note">ข้อมูลจาก Syllabus JSON แสดงแบบอ่านอย่างเดียว เพื่อรักษารายละเอียดต้นฉบับ</div>`}
        ${renderBody()}
        <div class="footer-note">รายงานนี้จัดเก็บแยกเป็น JSON • ไม่บันทึกอัตโนมัติ • กรุณาตรวจสอบไฟล์ที่ดาวน์โหลดก่อนปิดเว็บไซต์</div>
-       <div class="sticky-save"><div class="sticky-inner"><p><strong>บันทึกข้อมูลรายงานทุกหมวดเป็นไฟล์เดียว</strong><span id="save-indicator">${unsaved?'มีข้อมูลเปลี่ยนแปลงที่ยังไม่ได้บันทึก JSON':'สามารถแก้ไขและบันทึก JSON ได้ตลอดเวลา'}</span></p><button type="button" class="btn btn-primary" data-action="save-report">⇩ บันทึกรายงาน JSON</button></div></div>`}
+       <div class="sticky-save"><div class="sticky-inner"><p><strong>บันทึกรายงาน JSON หรือสร้างเอกสาร Word</strong><span id="save-indicator">${unsaved?'มีข้อมูลเปลี่ยนแปลงที่ยังไม่ได้บันทึก JSON':'สามารถแก้ไขและบันทึก JSON ได้ตลอดเวลา'}</span></p><div class="footer-actions"><button type="button" class="btn btn-primary" data-action="save-report">⇩ บันทึกรายงาน JSON</button><button type="button" class="btn btn-docx" data-action="export-docx">▤ สร้าง DOCX</button></div></div></div>`}
       </main></div>`;
     updateMetrics();
   }
@@ -218,6 +218,21 @@
     unsaved=false;const e=document.getElementById('save-indicator');if(e)e.textContent='เริ่มดาวน์โหลดแล้ว • กรุณาตรวจสอบไฟล์ใน Downloads';
     const s=stats();showToast(s.incomplete?`เริ่มดาวน์โหลด JSON แล้ว • มี ${s.incomplete} รายการที่ยังไม่กรอกสาเหตุ/การดำเนินการครบ`:'เริ่มดาวน์โหลดรายงาน JSON แล้ว กรุณาตรวจสอบไฟล์');
   }
+  function downloadDocx(){
+    if(!report)return;
+    try {
+      if(!window.SyllabusReportDocx)throw new Error('ไม่พบชุดคำสั่งสร้างเอกสาร Word');
+      const blob=window.SyllabusReportDocx.makeDocx(report);
+      const c=readSource().CourseInfo||{};
+      const name=`SYLLABUS_REPORT_${fileSafe(c.CourseCode)}_${fileSafe(c.AcademicYear)}_${fileSafe(c.Semester)}_${fileSafe(c.Section||'01')}.docx`;
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');
+      a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),3000);
+      const st=stats();
+      showToast(st.missing||st.incomplete ? `เริ่มดาวน์โหลด DOCX แล้ว • รายงานยังมี ${st.missing} รายการที่ไม่ระบุผล และ ${st.incomplete} รายการที่ต้องกรอกสาเหตุ/การดำเนินการ` : 'เริ่มดาวน์โหลด DOCX แล้ว กรุณาตรวจสอบไฟล์ใน Downloads');
+      // DOCX export never marks the Report JSON as saved and never modifies report data.
+    } catch(err){showToast('สร้าง DOCX ไม่สำเร็จ: '+(err?.message||err),true);}
+  }
   async function loadFile(event,mode){const file=event.target.files?.[0];if(!file)return;event.target.value='';
     try{if(file.size>15*1024*1024)throw new Error('ไฟล์มีขนาดเกิน 15 MB');const text=await file.text();const data=JSON.parse(text.replace(/^\uFEFF/,''));mode==='syllabus'?startSyllabus(data,file.name):startReport(data);}
     catch(err){showToast('เปิดไฟล์ไม่สำเร็จ: '+err.message,true);}
@@ -231,6 +246,7 @@
     if(action==='open-syllabus')document.getElementById('syllabus-file').click();
     else if(action==='open-report')document.getElementById('report-file').click();
     else if(action==='save-report')downloadReport();
+    else if(action==='export-docx')downloadDocx();
     else if(action==='toggle-menu'){mobileOpen=!mobileOpen;render();}
     else if(action==='close-menu'){mobileOpen=false;render();}
   });
