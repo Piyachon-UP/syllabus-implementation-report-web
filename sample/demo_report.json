@@ -1,0 +1,169 @@
+{
+  "ReportSchemaVersion": "1.0.0",
+  "ReportType": "SyllabusImplementation",
+  "SourceOfferingId": "999999-1-2569-SEC01",
+  "SourceFileName": "demo_syllabus.json",
+  "SourceSyllabus": {
+    "SchemaVersion": "1.0.0",
+    "OfferingId": "999999-1-2569-SEC01",
+    "SourceType": "BlazorManual",
+    "CourseInfo": {
+      "CourseCode": "999999",
+      "CourseTitleTh": "รายวิชาตัวอย่างสำหรับทดสอบระบบ",
+      "CourseTitleEn": "Sample Course for Testing",
+      "CourseDescriptionTh": "รายวิชาตัวอย่างเพื่อสาธิตการบันทึกผลการดำเนินงาน",
+      "Credits": "3",
+      "LectureHours": 2,
+      "LabHours": 2,
+      "SelfStudyHours": 5,
+      "AcademicYear": 2569,
+      "Semester": "1",
+      "Section": "01",
+      "LastUpdatedDate": "2026-11-01"
+    },
+    "Curriculum": {
+      "CurriculumCode": "DEMO-COURSE",
+      "ProgramName": "สาขาวิชาตัวอย่าง",
+      "DegreeLevel": "ปริญญาตรี"
+    },
+    "Instructors": [
+      {
+        "DisplayName": "อ. ผู้สอน ตัวอย่าง",
+        "Department": "สาขาวิชาตัวอย่าง",
+        "IsResponsibleInstructor": true
+      },
+      {
+        "DisplayName": "อ. ผู้ช่วย ตัวอย่าง",
+        "Department": "สาขาวิชาตัวอย่าง",
+        "IsResponsibleInstructor": false
+      }
+    ],
+    "PLOs": [
+      {
+        "PloCode": "PLO1",
+        "DescriptionTh": "ตัวอย่างผลลัพธ์การเรียนรู้ระดับหลักสูตร"
+      }
+    ],
+    "CLOs": [
+      {
+        "CloCode": "CLO1",
+        "DescriptionTh": "ตัวอย่างผลลัพธ์การเรียนรู้รายวิชา",
+        "MappedPloCodes": [
+          "PLO1"
+        ]
+      }
+    ],
+    "ClassMeetings": [],
+    "Exams": [],
+    "StudentGroups": [],
+    "LecturePlans": [
+      {
+        "WeekNumber": 1,
+        "Topic": "แนะนำรายวิชา",
+        "TeachingMethods": "การบรรยาย",
+        "MappedCloCodes": [
+          "CLO1"
+        ],
+        "Notes": "อ. ผู้สอน ตัวอย่าง"
+      },
+      {
+        "WeekNumber": 2,
+        "Topic": "หลักการเบื้องต้น",
+        "TeachingMethods": "การอภิปรายกลุ่ม",
+        "MappedCloCodes": [
+          "CLO1"
+        ],
+        "Notes": "อ. ผู้สอน ตัวอย่าง"
+      }
+    ],
+    "LabPlans": [
+      {
+        "WeekNumber": 1,
+        "Topic": "แนะนำห้องปฏิบัติการ",
+        "TeachingMethods": "การสาธิตขั้นตอนปฏิบัติ",
+        "MappedCloCodes": [
+          "CLO1"
+        ],
+        "Notes": "อ. ผู้ช่วย ตัวอย่าง"
+      },
+      {
+        "WeekNumber": 2,
+        "Topic": "ทดลองและเก็บข้อมูล",
+        "TeachingMethods": "การทดลองและเก็บข้อมูล",
+        "MappedCloCodes": [
+          "CLO1"
+        ],
+        "Notes": "อ. ผู้ช่วย ตัวอย่าง"
+      }
+    ],
+    "Assessments": [
+      {
+        "AssessmentName": "ทดสอบกลางภาค",
+        "AssessmentType": "การสอบกลางภาค",
+        "WeightPercent": 40,
+        "MappedCloCodes": [
+          "CLO1"
+        ]
+      },
+      {
+        "AssessmentName": "รายงานปฏิบัติการ",
+        "AssessmentType": "ปฏิบัติการ",
+        "WeightPercent": 60,
+        "MappedCloCodes": [
+          "CLO1"
+        ]
+      }
+    ],
+    "GradeScale": [],
+    "Resources": []
+  },
+  "CreatedAt": "2026-11-13T00:00:00.000Z",
+  "UpdatedAt": "2026-11-13T00:00:00.000Z",
+  "ReportDate": "2026-11-13",
+  "LectureResults": [
+    {
+      "SourceIndex": 0,
+      "WeekNumber": 1,
+      "Status": "ตามแผน",
+      "Reason": "",
+      "Action": ""
+    },
+    {
+      "SourceIndex": 1,
+      "WeekNumber": 2,
+      "Status": "ไม่ตามแผน",
+      "Reason": "มีการปรับตารางการสอน",
+      "Action": "จัดกิจกรรมชดเชยในสัปดาห์ถัดไป"
+    }
+  ],
+  "LabResults": [
+    {
+      "SourceIndex": 0,
+      "WeekNumber": 1,
+      "Status": "ตามแผน",
+      "Reason": "",
+      "Action": ""
+    },
+    {
+      "SourceIndex": 1,
+      "WeekNumber": 2,
+      "Status": "",
+      "Reason": "",
+      "Action": ""
+    }
+  ],
+  "AssessmentResults": [
+    {
+      "SourceIndex": 0,
+      "Status": "บรรลุ",
+      "Reason": "",
+      "Action": ""
+    },
+    {
+      "SourceIndex": 1,
+      "Status": "ไม่บรรลุ",
+      "Reason": "ผลการส่งรายงานต่ำกว่าเป้าหมาย",
+      "Action": "ให้ข้อเสนอแนะและมอบหมายส่งงานเพิ่มเติม"
+    }
+  ]
+}

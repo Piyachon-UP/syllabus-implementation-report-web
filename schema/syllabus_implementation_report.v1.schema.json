@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schema/syllabus-implementation-report.v1.schema.json",
+  "title": "Syllabus Implementation Report JSON - v1.0.0",
+  "description": "A separate, portable implementation report. Blank status/reason/action are allowed for work in progress. SourceSyllabus is an unchanged snapshot of the original syllabus.",
+  "type": "object",
+  "required": [
+    "ReportSchemaVersion",
+    "ReportType",
+    "SourceOfferingId",
+    "SourceSyllabus",
+    "CreatedAt",
+    "UpdatedAt",
+    "ReportDate",
+    "LectureResults",
+    "LabResults",
+    "AssessmentResults"
+  ],
+  "properties": {
+    "ReportSchemaVersion": {
+      "const": "1.0.0"
+    },
+    "ReportType": {
+      "const": "SyllabusImplementation"
+    },
+    "SourceOfferingId": {
+      "type": "string"
+    },
+    "SourceFileName": {
+      "type": "string"
+    },
+    "SourceSyllabus": {
+      "type": "object",
+      "required": [
+        "CourseInfo",
+        "Instructors",
+        "LecturePlans",
+        "LabPlans",
+        "Assessments"
+      ],
+      "properties": {
+        "SchemaVersion": {
+          "type": "string"
+        },
+        "CourseInfo": {
+          "type": "object"
+        },
+        "Instructors": {
+          "type": "array"
+        },
+        "LecturePlans": {
+          "type": "array"
+        },
+        "LabPlans": {
+          "type": "array"
+        },
+        "Assessments": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CreatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "UpdatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ReportDate": {
+      "type": "string",
+      "anyOf": [
+        {
+          "format": "date",
+          "minLength": 10
+        },
+        {
+          "const": ""
+        }
+      ]
+    },
+    "LectureResults": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/planResult"
+      }
+    },
+    "LabResults": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/planResult"
+      }
+    },
+    "AssessmentResults": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/assessmentResult"
+      }
+    }
+  },
+  "$defs": {
+    "statusFields": {
+      "type": "object",
+      "required": [
+        "SourceIndex",
+        "Status",
+        "Reason",
+        "Action"
+      ],
+      "properties": {
+        "SourceIndex": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "Status": {
+          "type": "string"
+        },
+        "Reason": {
+          "type": "string"
+        },
+        "Action": {
+          "type": "string"
+        },
+        "WeekNumber": {
+          "type": [
+            "integer",
+            "number",
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "planResult": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/statusFields"
+        },
+        {
+          "type": "object",
+          "required": [
+            "WeekNumber"
+          ],
+          "properties": {
+            "WeekNumber": {
+              "type": [
+                "integer",
+                "number",
+                "string",
+                "null"
+              ]
+            },
+            "Status": {
+              "enum": [
+                "",
+                "ตามแผน",
+                "ไม่ตามแผน"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "assessmentResult": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/statusFields"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "Status": {
+              "enum": [
+                "",
+                "บรรลุ",
+                "ไม่บรรลุ"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}
